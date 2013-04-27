@@ -5,4 +5,5 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^entries/$', 'blog.views.entries', name='entries'),
+    url(r'^entry/create/$', 'blog.views.entry_create', name='entry_create')
 )
