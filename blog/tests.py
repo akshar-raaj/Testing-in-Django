@@ -8,5 +8,5 @@ class BlogEntriesTest(TestCase):
         self.c = Client()
 
     def test_entries_access(self):
-        response = self.c.get('/blog/entries')
+        response = self.c.get('/blog/entries/')
         self.assertEqual(response.status_code, 200)
