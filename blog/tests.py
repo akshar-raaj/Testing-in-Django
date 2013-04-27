@@ -39,3 +39,13 @@ class BlogEntriesTest(TestCase):
         response = self.c.post(reverse('entry_create'), data)
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, "form", "title", "This field is required.")
+
+    def test_valid_entry_create(self):
+        self.c.login(username='test', password='test')
+        data = {'text': 'Test text', 'title': 'Test title'}
+        data['user'] = self.user.id
+        self.assertEqual(BlogEntry.objects.count(), 0)
+        response = self.c.post(reverse('entry_create'), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(BlogEntry.objects.count(), 1)
+
