@@ -9,7 +9,7 @@ from blog.forms import BlogEntryForm
 from blog.models import BlogEntry
 
 def entries(request):
-    entries = BlogEntry.objects.all()
+    entries = BlogEntry.published.all()
     return render_to_response("blog/entries.html", {'entries': entries})
 
 @login_required

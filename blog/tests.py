@@ -22,6 +22,7 @@ class BlogEntriesTest(TestCase):
         #create few blog entries
         BlogEntry.objects.create(title='Test', text='Test', user=self.user)
         BlogEntry.objects.create(title='Test', text='Test', user=self.user)
+        BlogEntry.objects.create(title='Test', text='Test', user=self.user, is_published=False)
 
         response = self.c.get(reverse('entries'))
         #assert that context contains as many entries as you expect
