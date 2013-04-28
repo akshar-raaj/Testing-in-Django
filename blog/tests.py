@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.staticfiles import finders
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from blog.models import BlogEntry
 
@@ -49,3 +51,30 @@ class BlogEntriesTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(BlogEntry.objects.count(), 1)
 
+    def test_entry_custom_managers(self):
+        BlogEntry.objects.create(title='Test', text='Test', user=self.user, is_published=False)
+        BlogEntry.objects.create(title='Test', text='Test', user=self.user)
+        self.assertEqual(BlogEntry.objects.count(), 2)
+        self.assertEqual(BlogEntry.published.count(), 1)
+
+    def test_entries_page(self):
+        for i in range(15):
+            BlogEntry.objects.create(title="title", text="text", user=self.user, is_published=True)
+
+        #access first page
+        response = self.c.get(reverse("entries_page", args=[1,]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['entries']), 10)
+
+        #access second page
+        response = self.c.get(reverse("entries_page", args=[2,]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['entries']), 5)
+
+        #access third page
+        response = self.c.get(reverse("entries_page", args=[3,]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_images(self):
+        abs_path = finders.find('default.jpg')
+        self.assertTrue(staticfiles_storage.exists(abs_path))
