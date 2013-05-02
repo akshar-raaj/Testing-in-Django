@@ -3,3 +3,4 @@ python:
     - "2.7"
     - "2.6"
 install: pip install -r requirements.txt --use-mirrors
+script: python manage.py test blog --settings=testcases.test_settings
