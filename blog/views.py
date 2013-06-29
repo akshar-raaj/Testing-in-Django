@@ -5,12 +5,14 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.http import Http404
 
-from blog.forms import BlogEntryForm
-from blog.models import BlogEntry
+from .forms import BlogEntryForm
+from .models import BlogEntry
+
 
 def entries(request):
     entries = BlogEntry.published.all()
     return render_to_response("blog/entries.html", {'entries': entries})
+
 
 @login_required
 def entry_create(request):
@@ -22,10 +24,11 @@ def entry_create(request):
             return HttpResponseRedirect(reverse('entries'))
     return render(request, "blog/entry_create.html", {'form': form})
 
+
 def entries_page(request, page):
     page = int(page)
     entries = BlogEntry.published.all()
-    paginator = Paginator(entries, 10) #10 entries per page
+    paginator = Paginator(entries, 10)  # 10 entries per page
     if page > paginator.num_pages:
         raise Http404()
     page_ = paginator.page(page)
