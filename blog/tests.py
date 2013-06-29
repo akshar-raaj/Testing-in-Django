@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-from blog.models import BlogEntry
+from .models import BlogEntry
 
 
 class BlogEntriesTest(TestCase):
